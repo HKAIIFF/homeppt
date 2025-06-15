@@ -1,0 +1,2218 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIF娛樂集團 - 下一代娛樂生態系統</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #7c3aed;
+            --accent: #06d6a0;
+            --dark-bg: #0f0f0f;
+            --card-bg: rgba(15, 23, 42, 0.8);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', 'Microsoft JhengHei', sans-serif;
+            background: var(--dark-bg);
+            color: #ffffff;
+            overflow: hidden;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(37, 99, 235, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(124, 58, 237, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(6, 214, 160, 0.05) 0%, transparent 50%);
+            background-attachment: fixed;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .ppt-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            width: 100vw;
+            position: relative;
+        }
+        
+        /* Header with logo */
+        .ppt-header {
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(15, 15, 15, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(6, 214, 160, 0.1);
+            z-index: 100;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary), var(--accent), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .logo-text {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, var(--primary), var(--accent), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 30px rgba(6, 214, 160, 0.3);
+        }
+        
+        .slide-indicator {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .indicator-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .indicator-dot.active {
+            background: var(--accent);
+            transform: scale(1.2);
+        }
+        
+        /* Slides container */
+        .slides-container {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            pointer-events: none;
+        }
+        
+        .slide.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: all;
+        }
+        
+        .slide-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .slide-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            position: relative;
+            background: linear-gradient(135deg, var(--primary), var(--accent), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .slide-subtitle {
+            font-size: 1.4rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 3rem;
+            max-width: 800px;
+        }
+        
+        .slide-body {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            width: 100%;
+        }
+        
+        /* Card styles */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--accent), var(--secondary));
+            opacity: 0.5;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(6, 214, 160, 0.2);
+        }
+        
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+        
+        .card-content {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+            font-size: 1.1rem;
+        }
+        
+        .card-content ul {
+            padding-left: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .card-content li {
+            margin-bottom: 0.8rem;
+        }
+        
+        /* Footer navigation */
+        .ppt-footer {
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(15, 15, 15, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(6, 214, 160, 0.1);
+            z-index: 100;
+        }
+        
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+        
+        .nav-btn:hover {
+            background: var(--accent);
+            transform: scale(1.1);
+        }
+        
+        .slide-number {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        /* Special slide styles */
+        .full-center {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .eco-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+        
+        .eco-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .eco-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(6, 214, 160, 0.2);
+        }
+        
+        .eco-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .eco-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Horizontal timeline */
+        .horizontal-timeline {
+            display: flex;
+            overflow-x: auto;
+            padding: 2rem 0;
+            gap: 1.5rem;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent) rgba(255,255,255,0.1);
+        }
+        
+        .horizontal-timeline::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        .horizontal-timeline::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+        }
+        
+        .horizontal-timeline::-webkit-scrollbar-thumb {
+            background-color: var(--accent);
+            border-radius: 4px;
+        }
+        
+        .timeline-item {
+            min-width: 300px;
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 1.5rem;
+            position: relative;
+            flex-shrink: 0;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: 3px solid var(--dark-bg);
+            box-shadow: 0 0 15px rgba(6, 214, 160, 0.5);
+            z-index: 2;
+        }
+        
+        .timeline-date {
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+        }
+        
+        .comparison-table th,
+        .comparison-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .comparison-table th {
+            background: rgba(6, 214, 160, 0.1);
+            color: var(--accent);
+            font-weight: 600;
+        }
+        
+        .valuation-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .valuation-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .valuation-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .team-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .team-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+        
+        .page-counter {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.6);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            z-index: 10;
+        }
+        
+        /* New styles for additional slides */
+        .comparison-chart {
+            display: flex;
+            height: 300px;
+            gap: 20px;
+            align-items: flex-end;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+        
+        .chart-bar {
+            width: 60px;
+            background: linear-gradient(to top, var(--primary), var(--accent));
+            border-radius: 10px 10px 0 0;
+            position: relative;
+            transition: height 1s ease;
+        }
+        
+        .chart-label {
+            position: absolute;
+            bottom: -30px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        
+        .chart-value {
+            position: absolute;
+            top: -30px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin: 2rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid rgba(6, 214, 160, 0.3);
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .slide-title {
+                font-size: 2rem;
+            }
+            
+            .slide-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .eco-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .slide-body {
+                grid-template-columns: 1fr;
+            }
+            
+            .valuation-grid, .team-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .horizontal-timeline {
+                flex-direction: column;
+            }
+            
+            .timeline-item {
+                min-width: 100%;
+            }
+            
+            .comparison-chart {
+                flex-direction: column;
+                height: auto;
+                align-items: center;
+            }
+            
+            .chart-bar {
+                width: 80%;
+                height: 60px !important;
+                border-radius: 0 10px 10px 0;
+            }
+            
+            .chart-label {
+                position: static;
+                margin-top: 5px;
+            }
+            
+            .chart-value {
+                position: absolute;
+                top: 50%;
+                right: 10px;
+                transform: translateY(-50%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="ppt-container">
+        <!-- Header with logo -->
+        <div class="ppt-header">
+            <div class="logo-container">
+                <div class="logo-icon">AI</div>
+                <div class="logo-text">AI FUTURE</div>
+            </div>
+            <div class="slide-indicator" id="slideIndicator">
+                <!-- Dynamically generated -->
+            </div>
+        </div>
+        
+        <!-- Slides container -->
+        <div class="slides-container" id="slidesContainer">
+            <!-- Slide 1: Cover -->
+            <div class="slide active" id="slide1">
+                <div class="slide-content full-center">
+                    <h1 class="slide-title">重新定義現實，創造無限可能</h1>
+                    <p class="slide-subtitle">全球首個AI原生娛樂生態系統</p>
+                    <div class="stat-grid">
+                        <div class="stat-item">
+                            <div class="stat-number">8</div>
+                            <div class="stat-label">核心平台</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">1B+</div>
+                            <div class="stat-label">目標用戶</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">$100B</div>
+                            <div class="stat-label">市場價值</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">2030</div>
+                            <div class="stat-label">願景實現</div>
+                        </div>
+                    </div>
+                    <p class="slide-subtitle" style="margin-top: 2rem;">顛覆萬億美元娛樂產業</p>
+                </div>
+                <div class="page-counter">1/30</div>
+            </div>
+            
+            <!-- Slide 2: Disruptive Value Proposition -->
+            <div class="slide" id="slide2">
+                <div class="slide-content">
+                    <h1 class="slide-title">顛覆性價值主張</h1>
+                    <p class="slide-subtitle">AI原生娛樂不是升級，而是全新物種</p>
+                    
+                    <div class="slide-body">
+                        <div class="card">
+                            <div class="card-title">創作革命</div>
+                            <div class="card-content">
+                                <p>人人成為世界創造者</p>
+                                <ul>
+                                    <li>AI輔助創作工具</li>
+                                    <li>實時內容生成</li>
+                                    <li>個性化敘事體驗</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">體驗革命</div>
+                            <div class="card-content">
+                                <p>無限個性化沉浸</p>
+                                <ul>
+                                    <li>動態響應環境</li>
+                                    <li>多感官體驗</li>
+                                    <li>跨平台連續性</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">經濟革命</div>
+                            <div class="card-content">
+                                <p>創作者與用戶價值共享</p>
+                                <ul>
+                                    <li>觀看即賺機制</li>
+                                    <li>創作者價值量化</li>
+                                    <li>去中心化市場</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-counter">2/30</div>
+            </div>
+            
+            <!-- Slide 3: Market Opportunity -->
+            <div class="slide" id="slide3">
+                <div class="slide-content">
+                    <h1 class="slide-title">市場機會</h1>
+                    
+                    <div class="slide-body">
+                        <div class="card">
+                            <div class="card-title">全球娛樂市場</div>
+                            <div class="card-content">
+                                <div class="stat-number">$2.3T</div>
+                                <p>當前市場規模，年增長率8.5%</p>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">AI驅動增長</div>
+                            <div class="card-content">
+                                <div class="stat-number">45%</div>
+                                <p>複合年增長率，遠超傳統娛樂</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card" style="grid-column: 1 / -1; margin-top: 2rem;">
+                        <div class="card-title">我們的目標</div>
+                        <div class="card-content">
+                            <p>重新定義1萬億美元市場細分</p>
+                            <div class="stat-grid">
+                                <div class="stat-item">
+                                    <div class="stat-number">2030</div>
+                                    <div class="stat-label">目標年份</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-number">1B</div>
+                                    <div class="stat-label">用戶數</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-number">$100B</div>
+                                    <div class="stat-label">收入</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-counter">3/30</div>
+            </div>
+            
+            <!-- Slide 4: Development Roadmap -->
+            <div class="slide" id="slide4">
+                <div class="slide-content">
+                    <h1 class="slide-title">戰略發展路線圖</h1>
+                    <p class="slide-subtitle">三階段實施策略</p>
+                    
+                    <div class="horizontal-timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-date">2025-2027</div>
+                            <div class="card-title">第一階段：基礎建設</div>
+                            <div class="card-content">
+                                <ul>
+                                    <li>推出AI電影學院</li>
+                                    <li>首屆AI國際電影節</li>
+                                    <li>404.world平台MVP</li>
+                                    <li>達到1000萬用戶</li>
+                                    <li>開發核心AI技術棧</li>
+                                    <li>建立香港總部</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-date">2028-2030</div>
+                            <div class="card-title">第二階段：全球擴張</div>
+                            <div class="card-content">
+                                <ul>
+                                    <li>推出404.GLASS硬件</li>
+                                    <li>開放World404主題公園</li>
+                                    <li>擴展至50+國家</li>
+                                    <li>達到5億用戶</li>
+                                    <li>建立全球合作夥伴</li>
+                                    <li>推出AIF.Exchange平台</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-date">2031-2035</div>
+                            <div class="card-title">第三階段：生態主導</div>
+                            <div class="card-content">
+                                <ul>
+                                    <li>全面生態整合</li>
+                                    <li>行業標準制定</li>
+                                    <li>全球創意經濟</li>
+                                    <li>10億+活躍用戶</li>
+                                    <li>擴展至教育和企業市場</li>
+                                    <li>開發下一代AI娛樂技術</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card" style="margin-top: 2rem;">
+                        <div class="card-content">
+                            <div class="stat-grid">
+                                <div class="stat-item">
+                                    <div class="stat-number">$280M</div>
+                                    <div class="stat-label">第一階段投資</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-number">$1.2B</div>
+                                    <div class="stat-label">第二階段投資</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-number">$5B+</div>
+                                    <div class="stat-label">第三階段投資</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-counter">4/30</div>
+            </div>
+            
+            <!-- Slide 5: Eight-Dimensional Ecosystem -->
+            <div class="slide" id="slide5">
+                <div class="slide-content">
+                    <h1 class="slide-title">八維生態系統</h1>
+                    <p class="slide-subtitle">教育 → 內容 → 平台 → 明星 → 交易 → 金融 → 硬件 → 體驗</p>
+                    
+                    <div class="eco-grid">
+                        <div class="eco-item">
+                            <div class="eco-icon"><i class="fas fa-graduation-cap"></i></div>
+                            <div class="eco-title">AI電影學院</div>
+                            <div class="stat-label">人才孵化器</div>
+                        </div>
+                        
+                        <div class="eco-item">
+                            <div class="eco-icon"><i class="fas fa-film"></i></div>
+                            <div class="eco-title">香港AI電影節</div>
+                            <div class="stat-label">內容發現</div>
+                        </div>
+                        
+                        <div class="eco-item">
+                            <div class="eco-icon"><i class="fas fa-globe"></i></div>
+                            <div class="eco-title">404.world平台</div>
+                            <div class="stat-label">無限世界引擎</div>
+                        </div>
+                        
+                        <div class="eco-item">
+                            <div class="eco-icon"><i class="fas fa-star"></i></div>
+                            <div class="eco-title">StarOS平台</div>
+                            <div class="stat-label">數位名人</div>
+                        </div>
+                        
+                        <div class="eco-item">
+                            <div class="eco-icon"><i class="fas fa-exchange-alt"></i></div>
+                            <div class="eco-title">AIF.Exchange</div>
+                            <div class="stat-label">數位資產市場</div>
+                        </div>
+                        
+                        <div class="eco-item">
+                            <div class="eco-icon"><i class="fas fa-credit-card"></i></div>
+                            <div class="eco-title">AIFCARD</div>
+                            <div class="stat-label">創意價值金融</div>
+                        </div>
+                        
+                        <div class="eco-item">
+                            <div class="eco-icon"><i class="fas fa-glasses"></i></div>
+                            <div class="eco-title">404.GLASS</div>
+                            <div class="stat-label">智能硬件</div>
+                        </div>
+                        
+                        <div class="eco-item">
+                            <div class="eco-icon"><i class="fas fa-map"></i></div>
+                            <div class="eco-title">World404公園</div>
+                            <div class="stat-label">實體體驗</div>
+                        </div>
+                    </div>
+                    
+                    <div class="card" style="margin-top: 2rem;">
+                        <div class="card-content">
+                            <p><strong>協同效應：</strong> 每個平台創造獨立價值同時增強其他平台</p>
+                            <p><strong>競爭壁壘：</strong> 八維整合創造無縫生態系統</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-counter">5/30</div>
+            </div>
+            
+            <!-- Slide 6: AI Film Academy -->
+            <div class="slide" id="slide6">
+                <div class="slide-content">
+                    <h1 class="slide-title">AI電影學院</h1>
+                    <p class="slide-subtitle">未來創意人才的全球搖籃</p>
+                    
+                    <div class="slide-body">
+                        <div class="card">
+                            <div class="card-title">核心價值</div>
+                            <div class="card-content">
+                                <p>培養下一代創作者</p>
+                                <ul>
+                                    <li>整合AI與創意藝術課程</li>
+                                    <li>行業領先師資</li>
+                                    <li>全球校園網絡</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">項目</div>
+                            <div class="card-content">
+                                <ul>
+                                    <li>4年制AI藝術學士</li>
+                                    <li>專業認證課程</li>
+                                    <li>高管教育</li>
+                                    <li>在線學習平台</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">影響</div>
+                            <div class="card-content">
+                                <div class="stat-grid">
+                                    <div class="stat-item">
+                                        <div class="stat-number">10K+</div>
+                                        <div class="stat-label">年畢業生</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-number">95%</div>
+                                        <div class="stat-label">就業率</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-counter">6/30</div>
+            </div>
+            
+            <!-- Slide 7: Hong Kong AI International Film Festival -->
+            <div class="slide" id="slide7">
+                <div class="slide-content">
+                    <h1 class="slide-title">香港AI國際電影節</h1>
+                    <p class="slide-subtitle">AI原生內容的頂級全球盛事</p>
+                    
+                    <div class="slide-body">
+                        <div class="card">
+                            <div class="card-title">使命</div>
+                            <div class="card-content">
+                                <p>發現、展示和慶祝AI生成內容</p>
+                                <ul>
+                                    <li>香港年度盛事</li>
+                                    <li>全球參與</li>
+                                    <li>行業網絡中心</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">類別</div>
+                            <div class="card-content">
+                                <ul>
+                                    <li>長篇AI電影</li>
+                                    <li>短片與動畫</li>
+                                    <li>沉浸式體驗</li>
+                                    <li>互動敘事</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">經濟影響</div>
+                            <div class="card-content">
+                                <div class="stat-grid">
+                                    <div class="stat-item">
+                                        <div class="stat-number">$150M</div>
+                                        <div class="stat-label">年收入</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-number">50K+</div>
+                                        <div class="stat-label">年參與者</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-counter">7/30</div>
+            </div>
+            
+            <!-- Slide 8: 404.world Platform -->
+            <div class="slide" id="slide8">
+                <div class="slide-content">
+                    <h1 class="slide-title">404.world平台</h1>
+                    <p class="slide-subtitle">無限平行世界創造引擎</p>
+                    
+                    <div class="slide-body">
+                        <div class="card">
+                            <div class="card-title">技術</div>
+                            <div class="card-content">
+                                <ul>
+                                    <li>AI輔助世界構建</li>
+                                    <li>實時渲染</li>
+                                    <li>跨平台兼容</li>
+                                    <li>基於區塊鏈的所有權</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">功能</div>
+                            <div class="card-content">
+                                <ul>
+                                    <li>直觀創作工具</li>
+                                    <li>多用戶協作</li>
+                                    <li>資產市場</li>
+                                    <li>觀看即賺生態</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">增長預測</div>
+                            <div class="card-content">
+                                <div class="stat-grid">
+                                    <div class="stat-item">
+                                        <div class="stat-number">50M</div>
+                                        <div class="stat-label">2027年用戶</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-number">500M</div>
+                                        <div class="stat-label">2030年用戶</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-counter">8/30</div>
+            </div>
+            
+            <!-- Slide 9: StarOS Digital Talent Platform -->
+            <div class="slide" id="slide9">
+                <div class="slide-content">
+                    <h1 class="slide-title">StarOS數位人才平台</h1>
+                    <p class="slide-subtitle">下一代人才代表</p>
+                    
+                    <div class="slide-body">
+                        <div class="card">
+                            <div class="card-title">技術</div>
+                            <div class="card-content">
+                                <ul>
+                                    <li>超現實數位化身</li>
+                                    <li>AI個性建模</li>
+                                    <li>基於區塊鏈的合約</li>
+                                    <li>多平台部署</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">應用</div>
+                            <div class="card-content">
+                                <ul>
+                                    <li>虛擬音樂會與表演</li>
+                                    <li>個性化粉絲互動</li>
+                                    <li>24/7內容創作</li>
+                                    <li>品牌合作</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">市場潛力</div>
+                            <div class="card-content">
+                                <div class="stat-grid">
+                                    <div class="stat-item">
+                                        <div class="stat-number">$5B</div>
+                                        <div class="stat-label">2027年收入</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-number">$20B</div>
+                                        <div class="stat-label">2030年收入</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-counter">9/30</div>
+            </div>
+            
+            <!-- Slide 10: AIF.Exchange -->
+            <div class="slide" id="slide10">
+                <div class="slide-content">
+                    <h1 class="slide-title">AIF.Exchange</h1>
+                    <p class="slide-subtitle">創意經濟數位資產市場</p>
+                    
+                    <div class="slide-body">
+                        <div class="card">
+                            <div class="card-title">技術</div>
+                            <div class="card-content">
+                                <ul>
+                                    <li>自定義區塊鏈基礎設施</li>
+                                    <li>高頻交易引擎</li>
+                                    <li>高級安全協議</li>
+                                    <li>監管合規框架</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">資產類別</div>
+                            <div class="card-content">
+                                <ul>
+                                    <li>內容版權代幣</li>
+                                    <li>創作者個人代幣</li>
+                                    <li>虛擬房地產</li>
+                                    <li>AI模型許可證</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">增長指標</div>
+                            <div class="card-content">
+                                <div class="stat-grid">
+                                    <div class="stat-item">
+                                        <div class="stat-number">$1B</div>
+                                        <div class="stat-label">2027年日交易量</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-number">$10B</div>
+                                        <div class="stat-label">2030年日交易量</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-counter">10/30</div>
+            </div>
+            
+            <!-- Slide 11: AIFCARD -->
+            <div class="slide" id="slide11">
+                <div class="slide-content">
+                    <h1 class="slide-title">AIFCARD</h1>
+                    <p class="slide-subtitle">數位與物理世界的金融橋樑</p>
+                    
+                    <div class="slide-body">
+                        <div class="card">
+                            <div class="card-title">功能</div>
+                            <div class="card-content">
+                                <ul>
+                                    <li>多貨幣支持</li>
+                                    <li>加密貨幣/法幣轉換</li>
+                                    <li>創作者版權分配</li>
+                                    <li>全球支付網絡</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">優勢</div>
+                            <div class="card-content">
+                                <ul>
+                                    <li>即時版權支付</li>
+                                    <li>低交易費</li>
+                                    <li>全球可訪問性</li>
+                                    <li>無縫生態整合</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">採用目標</div>
+                            <div class="card-content">
+                                <div class="stat-grid">
+                                    <div class="stat-item">
+                                        <div class="stat-number">10M</div>
+                                        <div class="stat-label">2027年用戶</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-number">100M</div>
+                                        <div class="stat-label">2030年用戶</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-counter">11/30</div>
+            </div>
+            
+            <!-- Slide 12: 404.GLASS -->
+            <div class="slide" id="slide12">
+                <div class="slide-content">
+                    <h1 class="slide-title">404.GLASS</h1>
+                    <p class="slide-subtitle">下一代混合現實硬件</p>
+                    
+                    <div class="slide-body">
+                        <div class="card">
+                            <div class="card-title">技術</div>
+                            <div class="card-content">
+                                <ul>
+                                    <li>4K micro-OLED顯示屏</li>
+                                    <li>120Hz刷新率</li>
+                                    <li>空間音頻系統</li>
+                                    <li>先進手勢識別</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">功能</div>
+                            <div class="card-content">
+                                <ul>
+                                    <li>無縫AR/VR切換</li>
+                                    <li>8小時電池續航</li>
+                                    <li>輕量化設計（低於150克）</li>
+                                    <li>生物識別認證</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">市場預測</div>
+                            <div class="card-content">
+                                <div class="stat-grid">
+                                    <div class="stat-item">
+                                        <div class="stat-number">5M</div>
+                                        <div class="stat-label">2027年銷量</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-number">20M</div>
+                                        <div class="stat-label">2030年銷量</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-counter">12/30</div>
+            </div>
+            
+            <!-- Slide 13: World404 Park -->
+            <div class="slide" id="slide13">
+                <div class="slide-content">
+                    <h1 class="slide-title">World404公園</h1>
+                    <p class="slide-subtitle">數位世界的物理體現</p>
+                    
+                    <div class="slide-body">
+                        <div class="card">
+                            <div class="card-title">概念</div>
+                            <div class="card-content">
+                                <ul>
+                                    <li>300英畝娛樂綜合體</li>
+                                    <li>無縫物理-數位整合</li>
+                                    <li>動態演化環境</li>
+                                    <li>AI驅動個性化體驗</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">區域</div>
+                            <div class="card-content">
+                                <ul>
+                                    <li>創作者樞紐（教育中心）</li>
+                                    <li>數位邊境（VR體驗）</li>
+                                    <li>明星廣場（名人互動）</li>
+                                    <li>生態穹頂（可持續技術展示）</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">經濟影響</div>
+                            <div class="card-content">
+                                <div class="stat-grid">
+                                    <div class="stat-item">
+                                        <div class="stat-number">5M</div>
+                                        <div class="stat-label">年訪客量</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-number">$2B</div>
+                                        <div class="stat-label">年收入</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-counter">13/30</div>
+            </div>
+            
+            <!-- Slide 14: Financial Model -->
+            <div class="slide" id="slide14">
+                <div class="slide-content">
+                    <h1 class="slide-title">可持續財務模型</h1>
+                    <p class="slide-subtitle">生態系統多元化收入來源</p>
+                    
+                    <div class="slide-body">
+                        <div class="card">
+                            <div class="card-title">收入來源</div>
+                            <div class="card-content">
+                                <ul>
+                                    <li>訂閱服務</li>
+                                    <li>硬件銷售</li>
+                                    <li>內容授權</li>
+                                    <li>交易費用</li>
+                                    <li>廣告</li>
+                                    <li>高級體驗</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">貨幣化策略</div>
+                            <div class="card-content">
+                                <ul>
+                                    <li>平台免費增值模式</li>
+                                    <li>創作者收入分成</li>
+                                    <li>企業解決方案</li>
+                                    <li>跨平台價值轉移</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">財務預測</div>
+                            <div class="card-content">
+                                <div class="stat-grid">
+                                    <div class="stat-item">
+                                        <div class="stat-number">$280M</div>
+                                        <div class="stat-label">2025年收入</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-number">$1.2B</div>
+                                        <div class="stat-label">2027年收入</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-number">$10B+</div>
+                                        <div class="stat-label">2030年收入</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-counter">14/30</div>
+            </div>
+            
+            <!-- Slide 15: Investment Opportunity -->
+            <div class="slide" id="slide15">
+                <div class="slide-content">
+                    <h1 class="slide-title">投資機會</h1>
+                    <p class="slide-subtitle">參與娛樂業的未來</p>
+                    
+                    <div class="slide-body">
+                        <div class="card">
+                            <div class="card-title">當前輪次</div>
+                            <div class="card-content">
+                                <div class="stat-number">$500M</div>
+                                <p>B輪融資</p>
+                                <ul>
+                                    <li>投前估值：$5B</li>
+                                    <li>最低投資額：$5M</li>
+                                    <li>截止日期：2025年Q4</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">財務預測</div>
+                            <div class="card-content">
+                                <div class="stat-number">35%+</div>
+                                <p>年增長率 (2025-2030)</p>
+                                <ul>
+                                    <li>2025收入：$280M</li>
+                                    <li>2027收入：$1.2B</li>
+                                    <li>2030收入：$10B+</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">ROI預測</div>
+                            <div class="card-content">
+                                <div class="stat-grid">
+                                    <div class="stat-item">
+                                        <div class="stat-number">10x</div>
+                                        <div class="stat-label">保守估計</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-number">50x</div>
+                                        <div class="stat-label">基本情況</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-number">100x+</div>
+                                        <div class="stat-label">樂觀估計</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-counter">15/30</div>
+            </div>
+            
+            <!-- Slide 16: Why Education as Entry Point -->
+            <div class="slide" id="slide16">
+                <div class="slide-content">
+                    <h1 class="slide-title">為何選擇教育作為切入點</h1>
+                    
+                    <div class="slide-body">
+                        <div class="card">
+                            <div class="card-title">現金流確定性</div>
+                            <div class="card-content">
+                                <p>教育付費意願強，預收費模式風險低</p>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">內容生產力</div>
+                            <div class="card-content">
+                                <p>持續培養創作者，為生態提供優質內容</p>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">品牌權威性</div>
+                            <div class="card-content">
+                                <p>教育機構建立行業話語權和標準制定能力</p>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">人才梯隊</div>
+                            <div class="card-content">
+                                <p>培養自己的生態建設者和未來合作夥伴</p>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">口碑效應</div>
+                            <div class="card-content">
+                                <p>學員成功案例帶動整個生態的品牌影響力</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-counter">16/30</div>
+            </div>
+            
+            <!-- Slide 17: Education-Driven Ecosystem Strategy -->
+            <div class="slide" id="slide17">
+                <div class="slide-content">
+                    <h1 class="slide-title">教育驅動的生態啟動策略</h1>
+                    
+                    <div class="horizontal-timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-date">第1年</div>
+                            <div class="card-title">啟動階段</div>
+                            <div class="card-content">
+                                <ul>
+                                    <li>AI電影學院開學</li>
+                                    <li>首屆電影節舉辦</li>
+                                    <li>建立基礎設施</li>
+                                    <li>招募核心師資</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-date">第2年</div>
+                            <div class="card-title">平台建設</div>
+                            <div class="card-content">
+                                <ul>
+                                    <li>404.world平台上線</li>
+                                    <li>學員作品優先展示</li>
+                                    <li>全球校園擴展</li>
+                                    <li>內容庫初步建立</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-date">第3年</div>
+                            <div class="card-title">明星孵化</div>
+                            <div class="card-content">
+                                <ul>
+                                    <li>StarOS平台上線</li>
+                                    <li>學員新星孵化</li>
+                                    <li>傳統明星合作</li>
+                                    <li>粉絲經濟啟動</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-date">第4年</div>
+                            <div class="card-title">金融化</div>
+                            <div class="card-content">
+                                <ul>
+                                    <li>AIF.Exchange上線</li>
+                                    <li>學員作品版權代幣化</li>
+                                    <li>創作者經濟生態</li>
+                                    <li>全球支付網絡</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card" style="margin-top: 2rem;">
+                        <div class="card-content">
+                            <p><strong>風險最低化：</strong> 教育模式成熟，市場需求明確</p>
+                            <p><strong>擴張性強：</strong> 從專業教育擴展到大眾培訓</p>
+                            <p><strong>國際化：</strong> 教育天然具有全球化屬性</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-counter">17/30</div>
+            </div>
+            
+            <!-- Slide 18: Unique Advantages of Education Approach -->
+            <div class="slide" id="slide18">
+                <div class="slide-content">
+                    <h1 class="slide-title">教育切入的獨特優勢</h1>
+                    
+                    <div class="slide-body">
+                        <div class="card">
+                            <div class="card-title">低風險</div>
+                            <div class="card-content">
+                                <p>教育模式成熟，市場需求明確</p>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">高壁壘</div>
+                            <div class="card-content">
+                                <p>師資和課程體系難以複製</p>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">擴張性強</div>
+                            <div class="card-content">
+                                <p>從專業教育擴展到大眾培訓</p>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">國際化</div>
+                            <div class="card-content">
+                                <p>教育天然具有全球化屬性</p>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">政策友好</div>
+                            <div class="card-content">
+                                <p>各國政府都支持AI教育發展</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-counter">18/30</div>
+            </div>
+            
+            <!-- Slide 19: Value Amplification from Education to Ecosystem -->
+            <div class="slide" id="slide19">
+                <div class="slide-content">
+                    <h1 class="slide-title">從教育到生態的價值放大</h1>
+                    
+                    <div class="eco-grid">
+                        <div class="eco-item">
+                            <div class="eco-icon"><i class="fas fa-layer-group"></i></div>
+                            <div class="eco-title">第一層價值</div>
+                            <div class="stat-label">教育直接收入</div>
+                        </div>
+                        
+                        <div class="eco-item">
+                            <div class="eco-icon"><i class="fas fa-copyright"></i></div>
+                            <div class="eco-title">第二層價值</div>
+                            <div class="stat-label">學員創作內容版權</div>
+                        </div>
+                        
+                        <div class="eco-item">
+                            <div class="eco-icon"><i class="fas fa-star"></i></div>
+                            <div class="eco-title">第三層價值</div>
+                            <div class="stat-label">明星孵化經紀價值</div>
+                        </div>
+                        
+                        <div class="eco-item">
+                            <div class="eco-icon"><i class="fas fa-users"></i></div>
+                            <div class="eco-title">第四層價值</div>
+                            <div class="stat-label">生態用戶規模價值</div>
+                        </div>
+                        
+                        <div class="eco-item">
+                            <div class="eco-icon"><i class="fas fa-crown"></i></div>
+                            <div class="eco-title">第五層價值</div>
+                            <div class="stat-label">品牌與標準制定</div>
+                        </div>
+                    </div>
+                    
+                    <div class="card" style="margin-top: 2rem;">
+                        <div class="card-content">
+                            <p><strong>總價值放大效應：</strong> 1+1+1...>10</p>
+                            <p><strong>生態協同：</strong> 各層價值相互增強，形成正向循環</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-counter">19/30</div>
+            </div>
+            
+            <!-- Slide 20: Diversified Revenue Matrix -->
+            <div class="slide" id="slide20">
+                <div class="slide-content">
+                    <h1 class="slide-title">多元化收入矩陣</h1>
+                    
+                    <div class="comparison-chart">
+                        <div class="chart-bar" style="height: 150px;">
+                            <div class="chart-value">$120B</div>
+                            <div class="chart-label">內容經濟</div>
+                        </div>
+                        <div class="chart-bar" style="height: 134px;">
+                            <div class="chart-value">$134B</div>
+                            <div class="chart-label">硬件產品</div>
+                        </div>
+                        <div class="chart-bar" style="height: 100px;">
+                            <div class="chart-value">$38B</div>
+                            <div class="chart-label">體驗經濟</div>
+                        </div>
+                        <div class="chart-bar" style="height: 80px;">
+                            <div class="chart-value">$28B</div>
+                            <div class="chart-label">金融服務</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-grid" style="margin-top: 2rem;">
+                        <div class="stat-item">
+                            <div class="stat-number">$320B</div>
+                            <div class="stat-label">總收入目標 (2030年)</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-counter">20/30</div>
+            </div>
+            
+            <!-- Slide 21: Profit Model Health -->
+            <div class="slide" id="slide21">
+                <div class="slide-content">
+                    <h1 class="slide-title">盈利模式健康度</h1>
+                    
+                    <div class="slide-body">
+                        <div class="card">
+                            <div class="card-title">高毛利業務</div>
+                            <div class="card-content">
+                                <p>軟件、內容、金融服務佔70%</p>
+                                <div class="stat-number">75%+</div>
+                                <p>綜合毛利率</p>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">穩定現金流</div>
+                            <div class="card-content">
+                                <p>教育預收費、訂閱服務</p>
+                                <div class="stat-number">35%+</div>
+                                <p>淨利潤率目標</p>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">增長引擎</div>
+                            <div class="card-content">
+                                <p>平台網絡效應、硬件規模經濟</p>
+                                <div class="stat-number">45%+</div>
+                                <p>年增長率 (2025-2030)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-counter">21/30</div>
+            </div>
+            
+            <!-- Slide 22: Valuation Benchmarks -->
+            <div class="slide" id="slide22">
+                <div class="slide-content">
+                    <h1 class="slide-title">估值對標與模型</h1>
+                    
+                    <div class="comparison-table">
+                        <table>
+                            <tr>
+                                <th>模式</th>
+                                <th>代表公司</th>
+                                <th>估值倍數</th>
+                                <th>對應估值</th>
+                            </tr>
+                            <tr>
+                                <td>內容平台</td>
+                                <td>Netflix</td>
+                                <td>15倍PS</td>
+                                <td>$480B</td>
+                            </tr>
+                            <tr>
+                                <td>硬件生態</td>
+                                <td>蘋果</td>
+                                <td>25倍PE</td>
+                                <td>$800B</td>
+                            </tr>
+                            <tr>
+                                <td>教育科技</td>
+                                <td>好未來</td>
+                                <td>20倍PE</td>
+                                <td>$640B</td>
+                            </tr>
+                            <tr>
+                                <td>Web3平台</td>
+                                <td>Coinbase</td>
+                                <td>10倍PS</td>
+                                <td>$320B</td>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <div class="card" style="margin-top: 2rem;">
+                        <div class="card-content">
+                            <div class="stat-number">$1500-2000B</div>
+                            <p>綜合估值範圍 (2030年)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-counter">22/30</div>
+            </div>
+            
+            <!-- Slide 23: Competitive Advantages -->
+            <div class="slide" id="slide23">
+                <div class="slide-content">
+                    <h1 class="slide-title">競爭優勢與護城河</h1>
+                    
+                    <div class="slide-body">
+                        <div class="card">
+                            <div class="card-title">生態壁壘</div>
+                            <div class="card-content">
+                                <p>八維一體，競爭對手難以全面模仿</p>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">技術壁壘</div>
+                            <div class="card-content">
+                                <p>AI原生技術棧，多項核心專利</p>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">內容壁壘</div>
+                            <div class="card-content">
+                                <p>持續的優質內容生產能力</p>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">品牌壁壘</div>
+                            <div class="card-content">
+                                <p>行業標準制定者地位</p>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">網絡效應</div>
+                            <div class="card-content">
+                                <p>用戶和創作者雙邊市場</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-counter">23/30</div>
+            </div>
+            
+            <!-- Slide 24: Global Expansion Path -->
+            <div class="slide" id="slide24">
+                <div class="slide-content">
+                    <h1 class="slide-title">全球化擴張路徑</h1>
+                    
+                    <div class="horizontal-timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-date">第1階段</div>
+                            <div class="card-title">大中華區</div>
+                            <div class="card-content">
+                                <ul>
+                                    <li>建立標杆市場</li>
+                                    <li>驗證商業模式</li>
+                                    <li>建立核心用戶群</li>
+                                    <li>2025-2027年</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-date">第2階段</div>
+                            <div class="card-title">亞太地區</div>
+                            <div class="card-content">
+                                <ul>
+                                    <li>複製成功模式</li>
+                                    <li>區域本土化</li>
+                                    <li>建立區域中心</li>
+                                    <li>2028-2029年</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-date">第3階段</div>
+                            <div class="card-title">歐美市場</div>
+                            <div class="card-content">
+                                <ul>
+                                    <li>深度本土化</li>
+                                    <li>收購互補企業</li>
+                                    <li>建立全球影響力</li>
+                                    <li>2030-2032年</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-date">第4階段</div>
+                            <div class="card-title">全球生態</div>
+                            <div class="card-content">
+                                <ul>
+                                    <li>統一全球生態</li>
+                                    <li>行業標準制定</li>
+                                    <li>全面市場覆蓋</li>
+                                    <li>2033年+</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card" style="margin-top: 2rem;">
+                        <div class="card-content">
+                            <div class="stat-grid">
+                                <div class="stat-item">
+                                    <div class="stat-number">50+</div>
+                                    <div class="stat-label">目標國家</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-number">1B+</div>
+                                    <div class="stat-label">全球用戶</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-counter">24/30</div>
+            </div>
+            
+            <!-- Slide 25: World-Class Team -->
+            <div class="slide" id="slide25">
+                <div class="slide-content">
+                    <h1 class="slide-title">世界級團隊配置</h1>
+                    
+                    <div class="team-grid">
+                        <div class="team-card">
+                            <div class="team-avatar"><i class="fas fa-brain"></i></div>
+                            <div class="eco-title">AI團隊</div>
+                            <div class="stat-label">來自OpenAI、Google、Meta</div>
+                        </div>
+                        
+                        <div class="team-card">
+                            <div class="team-avatar"><i class="fas fa-film"></i></div>
+                            <div class="eco-title">內容團隊</div>
+                            <div class="stat-label">奧斯卡獲獎導演、製片人</div>
+                        </div>
+                        
+                        <div class="team-card">
+                            <div class="team-avatar"><i class="fas fa-graduation-cap"></i></div>
+                            <div class="eco-title">教育團隊</div>
+                            <div class="stat-label">名校教授、行業專家</div>
+                        </div>
+                        
+                        <div class="team-card">
+                            <div class="team-avatar"><i class="fas fa-chart-line"></i></div>
+                            <div class="eco-title">商業團隊</div>
+                            <div class="stat-label">前獨角獸企業高管</div>
+                        </div>
+                    </div>
+                    
+                    <div class="card" style="margin-top: 2rem;">
+                        <div class="card-content">
+                            <div class="stat-grid">
+                                <div class="stat-item">
+                                    <div class="stat-number">15+</div>
+                                    <div class="stat-label">國家成員</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-number">80%+</div>
+                                    <div class="stat-label">博士學位持有者</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-number">20+</div>
+                                    <div class="stat-label">行業經驗年數</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-counter">25/30</div>
+            </div>
+            
+            <!-- Slide 26: Strategic Partners -->
+            <div class="slide" id="slide26">
+                <div class="slide-content">
+                    <h1 class="slide-title">戰略合作夥伴矩陣</h1>
+                    
+                    <div class="eco-grid">
+                        <div class="eco-item">
+                            <div class="eco-icon"><i class="fas fa-microchip"></i></div>
+                            <div class="eco-title">技術合作</div>
+                            <div class="stat-label">NVIDIA、Meta、蘋果</div>
+                        </div>
+                        
+                        <div class="eco-item">
+                            <div class="eco-icon"><i class="fas fa-play-circle"></i></div>
+                            <div class="eco-title">內容合作</div>
+                            <div class="stat-label">迪士尼、Netflix、騰訊</div>
+                        </div>
+                        
+                        <div class="eco-item">
+                            <div class="eco-icon"><i class="fas fa-university"></i></div>
+                            <div class="eco-title">教育合作</div>
+                            <div class="stat-label">斯坦福、MIT、清華、USC</div>
+                        </div>
+                        
+                        <div class="eco-item">
+                            <div class="eco-icon"><i class="fas fa-store"></i></div>
+                            <div class="eco-title">渠道合作</div>
+                            <div class="stat-label">運營商、OEM廠商、零售巨頭</div>
+                        </div>
+                        
+                        <div class="eco-item">
+                            <div class="eco-icon"><i class="fas fa-hand-holding-usd"></i></div>
+                            <div class="eco-title">投資合作</div>
+                            <div class="stat-label">紅杉、a16z、騰訊投資、軟銀</div>
+                        </div>
+                        
+                        <div class="eco-item">
+                            <div class="eco-icon"><i class="fas fa-landmark"></i></div>
+                            <div class="eco-title">政府合作</div>
+                            <div class="stat-label">香港、新加坡、迪拜政府</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-counter">26/30</div>
+            </div>
+            
+            <!-- Slide 27: Milestones and Risk Control -->
+            <div class="slide" id="slide27">
+                <div class="slide-content">
+                    <h1 class="slide-title">執行里程碑與風險控制</h1>
+                    
+                    <div class="slide-body">
+                        <div class="card">
+                            <div class="card-title">分階段目標</div>
+                            <div class="card-content">
+                                <ul>
+                                    <li>明確的季度收入和用戶目標</li>
+                                    <li>關鍵技術里程碑</li>
+                                    <li>生態整合進度</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">里程碑考核</div>
+                            <div class="card-content">
+                                <ul>
+                                    <li>季度審查機制</li>
+                                    <li>及時策略調整</li>
+                                    <li>績效掛鉤激勵</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">風險分散</div>
+                            <div class="card-content">
+                                <ul>
+                                    <li>多元化業務降低單點風險</li>
+                                    <li>地域分散策略</li>
+                                    <li>技術多路徑開發</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card" style="margin-top: 2rem;">
+                        <div class="card-content">
+                            <div class="stat-grid">
+                                <div class="stat-item">
+                                    <div class="stat-number">$500M</div>
+                                    <div class="stat-label">風險準備金</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-number">3</div>
+                                    <div class="stat-label">備用技術路線</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-counter">27/30</div>
+            </div>
+            
+            <!-- Slide 28: Current Funding Round -->
+            <div class="slide" id="slide28">
+                <div class="slide-content">
+                    <h1 class="slide-title">本輪融資方案</h1>
+                    
+                    <div class="slide-body">
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="stat-number">$500M</div>
+                                <p>天使輪融資</p>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="stat-number">$5B</div>
+                                <p>投前估值</p>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">資金用途</div>
+                            <div class="card-content">
+                                <div class="comparison-chart">
+                                    <div class="chart-bar" style="height: 200px;">
+                                        <div class="chart-value">40%</div>
+                                        <div class="chart-label">技術研發</div>
+                                    </div>
+                                    <div class="chart-bar" style="height: 150px;">
+                                        <div class="chart-value">30%</div>
+                                        <div class="chart-label">教育基礎設施</div>
+                                    </div>
+                                    <div class="chart-bar" style="height: 100px;">
+                                        <div class="chart-value">20%</div>
+                                        <div class="chart-label">市場推廣</div>
+                                    </div>
+                                    <div class="chart-bar" style="height: 50px;">
+                                        <div class="chart-value">10%</div>
+                                        <div class="chart-label">團隊建設</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-counter">28/30</div>
+            </div>
+            
+            <!-- Slide 29: Investment Return and Exit -->
+            <div class="slide" id="slide29">
+                <div class="slide-content">
+                    <h1 class="slide-title">投資回報與退出</h1>
+                    
+                    <div class="slide-body">
+                        <div class="card">
+                            <div class="card-title">估值預測</div>
+                            <div class="card-content">
+                                <div class="stat-grid">
+                                    <div class="stat-item">
+                                        <div class="stat-number">100x</div>
+                                        <div class="stat-label">保守估計</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-number">500x</div>
+                                        <div class="stat-label">基本情況</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-number">2500x</div>
+                                        <div class="stat-label">樂觀估計</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">退出路徑</div>
+                            <div class="card-content">
+                                <ul>
+                                    <li>2028年IPO：香港+納斯達克雙重上市</li>
+                                    <li>戰略收購：科技巨頭或娛樂集團</li>
+                                    <li>二級市場流動性</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">風險調整IRR</div>
+                            <div class="card-content">
+                                <div class="stat-number">35-50%</div>
+                                <p>預期年化回報率</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-counter">29/30</div>
+            </div>
+            
+            <!-- Slide 30: Final Call to Action -->
+            <div class="slide" id="slide30">
+                <div class="slide-content full-center">
+                    <h1 class="slide-title">加入娛樂革命</h1>
+                    <p class="slide-subtitle">成為人類體驗未來的一部分</p>
+                    
+                    <div class="card" style="max-width: 600px; width: 100%; margin-top: 2rem;">
+                        <div class="card-content">
+                            <div class="stat-grid">
+                                <div class="stat-item">
+                                    <div class="eco-icon"><i class="fas fa-handshake"></i></div>
+                                    <div class="eco-title">合作夥伴</div>
+                                    <p>partner@aif.homes</p>
+                                </div>
+                                
+                                <div class="stat-item">
+                                    <div class="eco-icon"><i class="fas fa-chart-line"></i></div>
+                                    <div class="eco-title">投資者關係</div>
+                                    <p>ir@aif.homes</p>
+                                </div>
+                                
+                                <div class="stat-item">
+                                    <div class="eco-icon"><i class="fas fa-newspaper"></i></div>
+                                    <div class="eco-title">媒體聯繫</div>
+                                    <p>press@aif.homes</p>
+                                </div>
+                            </div>
+                            
+                            <div style="text-align: center; margin-top: 2rem; padding: 1rem; background: rgba(6, 214, 160, 0.1); border-radius: 15px;">
+                                <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">AIF娛樂集團</h3>
+                                <p>www.aif.homes</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-counter">30/30</div>
+            </div>
+        </div>
+        
+        <!-- Footer navigation -->
+        <div class="ppt-footer">
+            <button class="nav-btn" id="prevBtn">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            
+            <div class="slide-number">
+                <span id="currentSlide">1</span> / <span id="totalSlides">30</span>
+            </div>
+            
+            <button class="nav-btn" id="nextBtn">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.slide');
+            const slideIndicator = document.getElementById('slideIndicator');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const currentSlideEl = document.getElementById('currentSlide');
+            const totalSlidesEl = document.getElementById('totalSlides');
+            
+            let currentSlide = 0;
+            const totalSlides = slides.length;
+            
+            // Initialize indicators and total slides
+            totalSlidesEl.textContent = totalSlides;
+            
+            // Create indicator dots
+            for (let i = 0; i < totalSlides; i++) {
+                const dot = document.createElement('div');
+                dot.classList.add('indicator-dot');
+                if (i === 0) dot.classList.add('active');
+                dot.addEventListener('click', () => goToSlide(i));
+                slideIndicator.appendChild(dot);
+            }
+            
+            // Update slide states
+            function updateSlide() {
+                slides.forEach((slide, index) => {
+                    if (index === currentSlide) {
+                        slide.classList.add('active');
+                    } else {
+                        slide.classList.remove('active');
+                    }
+                });
+                
+                // Update indicator dots
+                document.querySelectorAll('.indicator-dot').forEach((dot, index) => {
+                    if (index === currentSlide) {
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
+                    }
+                });
+                
+                // Update page number
+                currentSlideEl.textContent = currentSlide + 1;
+            }
+            
+            // Go to specific slide
+            function goToSlide(index) {
+                if (index >= 0 && index < totalSlides) {
+                    currentSlide = index;
+                    updateSlide();
+                }
+            }
+            
+            // Previous slide
+            prevBtn.addEventListener('click', () => {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    updateSlide();
+                }
+            });
+            
+            // Next slide
+            nextBtn.addEventListener('click', () => {
+                if (currentSlide < totalSlides - 1) {
+                    currentSlide++;
+                    updateSlide();
+                }
+            });
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') {
+                    prevBtn.click();
+                } else if (e.key === 'ArrowRight' || e.key === ' ') {
+                    nextBtn.click();
+                } else if (e.key >= '1' && e.key <= '9') {
+                    // Number key navigation
+                    const num = parseInt(e.key);
+                    if (num <= totalSlides) {
+                        goToSlide(num - 1);
+                    }
+                } else if (e.key === 'Home') {
+                    goToSlide(0);
+                } else if (e.key === 'End') {
+                    goToSlide(totalSlides - 1);
+                }
+            });
+            
+            // Initial update
+            updateSlide();
+        });
+    </script>
+</body>
+</html>
